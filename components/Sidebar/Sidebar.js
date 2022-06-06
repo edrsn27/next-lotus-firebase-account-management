@@ -26,7 +26,7 @@ export default function Sidebar() {
               href="#pablo"
               className="inline-block p-4 px-0 mr-0 text-sm font-bold text-left uppercase md:block md:pb-2 text-blueGray-600 whitespace-nowrap"
             >
-              Notus NextJS
+             FIREBASE USER MANAGEMENT
             </a>
           </Link>
           {/* User */}
