@@ -48,7 +48,7 @@ export default function AuthProvider({ children }) {
 
       setCurrentUser(user);
       setLoading(false);
-      console.log(user);
+     
     });
 
     return unsubscribe;
