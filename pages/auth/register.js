@@ -11,13 +11,14 @@ export default function Register() {
   const [lastName, setLastName] = React.useState("");
 
   const { signup } = useAuth();
-
-  const handleSubmit = (e) => {
+  const [error, setError] = React.useState(null);
+  const handleSubmit = async (e) => {
+    setError(false);
     e.preventDefault();
     try {
-      signup(email, password, { firstName, lastName, email });
+      await signup(email, password, { firstName, lastName, email });
     } catch (error) {
-      console.log(error);
+      setError(error.message);
     }
   };
   return (
@@ -56,6 +57,12 @@ export default function Register() {
                 </div>
                 <form onSubmit={handleSubmit}>
                   <div className="relative w-full mb-3">
+                    {error && (
+                      <div className="text-white px-6 py-4 border-0 rounded relative mb-4 bg-red-500">
+                        {error}
+                      </div>
+                    )}
+
                     <label
                       className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                       htmlFor="grid-password"
