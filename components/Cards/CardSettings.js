@@ -7,6 +7,7 @@ import { useAuth } from "context/AuthProvider";
 import { db } from "firebase-config";
 export default function CardSettings() {
   const { currentUser, writeUserData } = useAuth();
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -22,9 +23,11 @@ export default function CardSettings() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+   
     try {
       await writeUserData(currentUser.uid, {
         username,
+        email: currentUser.email,
         firstName,
         lastName,
         address,
