@@ -3,20 +3,23 @@ import PropTypes from "prop-types";
 
 // components
 
-import TableDropdown from "components/Dropdowns/TableDropdown.js";
+import TableDropdown from "components/Dropdowns/TableDropdownAction.js";
 import { db } from "firebase-config";
 import { ref, onValue } from "firebase/database";
 
 export default function CardTable({ color }) {
   const usersRef = ref(db, "users");
   const [users, setUsers] = useState([]);
+
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
   useEffect(() => {
     onValue(usersRef, (snapshot) => {
       const data = snapshot.val();
       if (data !== users) setUsers(Object.entries(data).reverse());
     });
   }, []);
-  console.log(users);
+
   return (
     <>
       <div
@@ -36,6 +39,21 @@ export default function CardTable({ color }) {
               >
                 APP USERS
               </h3>
+              {success && (
+                <div className="text-white px-6 py-4 border-0 rounded relative mb-4 bg-emerald-500">
+                  <span className="inline-block align-middle mr-8">
+                    {success}
+                  </span>
+                </div>
+              )}
+
+              {error && (
+                <div className="text-white px-6 py-4 border-0 rounded relative mb-4 bg-red-500">
+                  <span className="inline-block align-middle mr-8">
+                    {error}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -107,7 +125,7 @@ export default function CardTable({ color }) {
             <tbody>
               {users &&
                 users.map((user) => (
-                  <tr>
+                  <tr key={user[0]}>
                     <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                       <span
                         className={
@@ -143,7 +161,11 @@ export default function CardTable({ color }) {
                       </div>
                     </td>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
-                      <TableDropdown />
+                      <TableDropdown
+                        uid={user[0]}
+                        setSuccess={setSuccess}
+                        setError={setError}
+                      />
                     </td>
                   </tr>
                 ))}

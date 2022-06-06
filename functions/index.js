@@ -11,9 +11,9 @@ admin.initializeApp();
 // });
 
 exports.addAdminRole = functions.https.onCall((data, context) => {
-  // if (context.auth.token.admin !== true) {
-  //   return { error: "Only admins can add other admins" };
-  // }
+  if (context.auth.token.admin !== true) {
+    return { error: "Only admins can add other admins" };
+  }
   return admin
     .auth()
     .setCustomUserClaims(data.uid, {
@@ -21,7 +21,7 @@ exports.addAdminRole = functions.https.onCall((data, context) => {
     })
     .then((user) => {
       return {
-        message: `Success! ${user.email} has been made an admin`,
+        message: `Success! ${data.uid} has been made an admin`,
       };
     })
     .catch((err) => {
