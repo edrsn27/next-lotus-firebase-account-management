@@ -18,16 +18,15 @@ export default function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  async function writeUserData(uid, firstName, lastName) {
-    set(ref(db, "users/" + uid), {
-      firstname: firstName,
-      lastName: lastName,
+  function writeUserData(uid, data) {
+    return set(ref(db, "users/" + uid), {
+      ...data,
     });
   }
 
-  const signup = async (email, password, firstName, lastName) => {
+  const signup = async (email, password, data) => {
     const user = await createUserWithEmailAndPassword(auth, email, password);
-    await writeUserData(user.user.uid, firstName, lastName);
+    await writeUserData(user.user.uid, data);
     return user;
   };
   const signin = (email, password) => {
@@ -48,12 +47,18 @@ export default function AuthProvider({ children }) {
 
       setCurrentUser(user);
       setLoading(false);
-     
     });
 
     return unsubscribe;
   }, []);
 
-  const value = { currentUser, loading, signup, signin, signout };
+  const value = {
+    currentUser,
+    loading,
+    signup,
+    signin,
+    signout,
+    writeUserData,
+  };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

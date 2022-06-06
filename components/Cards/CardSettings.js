@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 
 // components
+import { onValue, ref } from "firebase/database";
 
 import { useAuth } from "context/AuthProvider";
 import { db } from "firebase-config";
-import { ref, onValue } from "firebase/database";
 export default function CardSettings() {
-  const { currentUser } = useAuth();
+  const { currentUser, writeUserData } = useAuth();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -17,6 +17,27 @@ export default function CardSettings() {
   const [postalCode, setPostalCode] = useState("");
   const [about, setAbout] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await writeUserData(currentUser.uid, {
+        username,
+        firstName,
+        lastName,
+        address,
+        city,
+        country,
+        postalCode,
+        about,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
+  };
   useEffect(() => {
     setEmail(currentUser.email);
     const userId = currentUser.uid;
@@ -56,7 +77,7 @@ export default function CardSettings() {
           </div>
         </div>
         <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-          <form>
+          <form onSubmit={handleSubmit}>
             <h6 className="text-blueGray-400 text-sm mt-3 mb-6 font-bold uppercase">
               User Information
             </h6>
@@ -159,7 +180,7 @@ export default function CardSettings() {
                     City
                   </label>
                   <input
-                    type="email"
+                    type="text"
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
@@ -228,9 +249,10 @@ export default function CardSettings() {
               <div className="relative w-full mb-3">
                 <button
                   className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                  type="button"
+                  type="submit"
+                  disabled={loading}
                 >
-                  Save
+                  {loading ? "Loading..." : "Save"}
                 </button>
               </div>
             </div>
