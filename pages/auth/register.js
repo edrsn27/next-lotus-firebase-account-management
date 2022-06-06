@@ -15,7 +15,7 @@ export default function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     try {
-      signup(email, password, { firstName, lastName });
+      signup(email, password, { firstName, lastName, email });
     } catch (error) {
       console.log(error);
     }
