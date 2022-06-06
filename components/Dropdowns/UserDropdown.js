@@ -1,7 +1,10 @@
 import React from "react";
 import { createPopper } from "@popperjs/core";
-
+import { useAuth } from "context/AuthProvider";
+import router from "next/router";
 const UserDropdown = () => {
+  const { currentUser, signout } = useAuth();
+
   // dropdown props
   const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
   const btnDropdownRef = React.createRef();
@@ -14,6 +17,11 @@ const UserDropdown = () => {
   };
   const closeDropdownPopover = () => {
     setDropdownPopoverShow(false);
+  };
+
+  const logout = () => {
+    signout();
+    router.push("/auth/login");
   };
   return (
     <>
@@ -50,7 +58,7 @@ const UserDropdown = () => {
           }
           onClick={(e) => e.preventDefault()}
         >
-          Action
+          {currentUser && currentUser.email}
         </a>
         <a
           href="#pablo"
@@ -76,9 +84,9 @@ const UserDropdown = () => {
           className={
             "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
           }
-          onClick={(e) => e.preventDefault()}
+          onClick={logout}
         >
-          Seprated link
+          Sign out
         </a>
       </div>
     </>
