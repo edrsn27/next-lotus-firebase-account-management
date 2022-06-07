@@ -6,17 +6,17 @@ import Auth from "layouts/Auth.js";
 import { useAuth } from "context/AuthProvider";
 export default function Register() {
   const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [firstName, setFirstName] = React.useState("");
-  const [lastName, setLastName] = React.useState("");
 
-  const { signup } = useAuth();
+  const { forgotpassword } = useAuth();
   const [error, setError] = React.useState(null);
+  const [success, setSuccess] = React.useState(false);
   const handleSubmit = async (e) => {
     setError(false);
+    setSuccess(false);
     e.preventDefault();
     try {
-      await signup(email, password, { firstName, lastName, email });
+      const account = await forgotpassword(email);
+      setSuccess("Successfully sent reset password link to your email");
     } catch (error) {
       setError(error.message);
     }
@@ -62,36 +62,13 @@ export default function Register() {
                         {error}
                       </div>
                     )}
-
-                    <label
-                      className="block mb-2 text-xs font-bold uppercase text-blueGray-600"
-                      htmlFor="grid-password"
-                    >
-                      First Name
-                    </label>
-                    <input
-                      type="text"
-                      className="w-full px-3 py-3 text-sm transition-all duration-150 ease-linear bg-white border-0 rounded shadow placeholder-blueGray-300 text-blueGray-600 focus:outline-none focus:ring"
-                      placeholder="First Name"
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="relative w-full mb-3">
-                    <label
-                      className="block mb-2 text-xs font-bold uppercase text-blueGray-600"
-                      htmlFor="grid-password"
-                    >
-                      Last Name
-                    </label>
-                    <input
-                      type="text"
-                      className="w-full px-3 py-3 text-sm transition-all duration-150 ease-linear bg-white border-0 rounded shadow placeholder-blueGray-300 text-blueGray-600 focus:outline-none focus:ring"
-                      placeholder="Last Name"
-                      value={lastName}
-                      onChange={(e) => setLastName(e.target.value)}
-                    />
+                    {success && (
+                      <div className="relative px-6 py-4 mb-4 text-white border-0 rounded bg-lightBlue-500">
+                        <span className="inline-block mr-8 align-middle">
+                          {success}
+                        </span>
+                      </div>
+                    )}
                   </div>
 
                   <div className="relative w-full mb-3">
@@ -110,48 +87,12 @@ export default function Register() {
                     />
                   </div>
 
-                  <div className="relative w-full mb-3">
-                    <label
-                      className="block mb-2 text-xs font-bold uppercase text-blueGray-600"
-                      htmlFor="grid-password"
-                    >
-                      Password
-                    </label>
-                    <input
-                      type="password"
-                      className="w-full px-3 py-3 text-sm transition-all duration-150 ease-linear bg-white border-0 rounded shadow placeholder-blueGray-300 text-blueGray-600 focus:outline-none focus:ring"
-                      placeholder="Password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="inline-flex items-center cursor-pointer">
-                      <input
-                        id="customCheckLogin"
-                        type="checkbox"
-                        className="w-5 h-5 ml-1 transition-all duration-150 ease-linear border-0 rounded form-checkbox text-blueGray-700"
-                      />
-                      <span className="ml-2 text-sm font-semibold text-blueGray-600">
-                        I agree with the{" "}
-                        <a
-                          href="#pablo"
-                          className="text-lightBlue-500"
-                          onClick={(e) => e.preventDefault()}
-                        >
-                          Privacy Policy
-                        </a>
-                      </span>
-                    </label>
-                  </div>
-
                   <div className="mt-6 text-center">
                     <button
                       className="w-full px-6 py-3 mb-1 mr-1 text-sm font-bold text-white uppercase transition-all duration-150 ease-linear rounded shadow outline-none bg-blueGray-800 active:bg-blueGray-600 hover:shadow-lg focus:outline-none"
                       type="submit"
                     >
-                      Create Account
+                      Send Password Reset Link
                     </button>
                   </div>
                 </form>
