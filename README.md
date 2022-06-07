@@ -1,3 +1,83 @@
+
+
+# Notus NextJS Firebase User Management <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fdemos.creative-tim.com%2Fnotus-nextjs%2F&text=Start%20your%20development%20with%20a%20Free%20Tailwind%20CSS%20and%20NextJS%20UI%20Kit%20and%20Admin.%20Let%20Notus%20NextJS%20amaze%20you%20with%20its%20cool%20features%20and%20build%20tools%20and%20get%20your%20project%20to%20a%20whole%20new%20level." target="_blank">
+
+### [Demo](https://next-lotus-firebase-account-management.vercel.app/)
+
+
+### Installation
+
+_Instructions on how to run the client._
+
+1. Clone the repo
+   ```sh
+   https://github.com/edrsn27/next-lotus-firebase-account-management.git
+   ```
+2. Install NPM packages (root directory)
+   ```sh
+   npm install
+   ```
+3. Run client
+   ```sh
+   npm run dev
+   ```
+4. Enter your Firebase Api keys in `env.local` (create this file on root directory)
+   ```sh
+   NEXT_PUBLIC_FIREBASE_API_KEY=
+    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+    NEXT_PUBLIC_FIREBASE_DATABASE_URL=
+    NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
+    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+    NEXT_PUBLIC_FIREBASE_APP_ID=
+   ```
+_Instructions on how to run the firebase functions._
+1. Goto functions directory 
+   ```sh
+   cd functions
+   npm install
+   ```
+2. Update/Comment addAdminRole functions on index.js ( enable user )
+   ```js
+    // if (context.auth.token.admin !== true) {
+    //     return { error: "Only admins can add other admins" };
+    // }
+   ```
+3. Deploy functions ( goto root directory ) needed to upgrade your firebase plan
+   ```sh
+   firebase deploy --only functions
+   ```
+4. Create and account /auth/register then goto /dashboard/users make it an admin
+![Make admin](https://firebasestorage.googleapis.com/v0/b/fir-account-management.appspot.com/o/readme%2Fmake-admin.PNG?alt=media&token=8b837ca5-dfca-4072-99e5-d32b8fcd432a)   
+
+5. Update/Uncomment addAdminRole functions on index.js ( only admin can access this functions )
+   ```js
+    if (context.auth.token.admin !== true) {
+        return { error: "Only admins can add other admins" };
+    }
+   ```
+### Feel free to explore pages
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Notus NextJS <a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fdemos.creative-tim.com%2Fnotus-nextjs%2F&text=Start%20your%20development%20with%20a%20Free%20Tailwind%20CSS%20and%20NextJS%20UI%20Kit%20and%20Admin.%20Let%20Notus%20NextJS%20amaze%20you%20with%20its%20cool%20features%20and%20build%20tools%20and%20get%20your%20project%20to%20a%20whole%20new%20level." target="_blank">![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)</a>
 
 ![version](https://img.shields.io/badge/version-1.1.0-blue.svg) ![license](https://img.shields.io/badge/license-MIT-blue.svg) <a href="https://github.com/creativetimofficial/notus-nextjs/issues?q=is%3Aopen+is%3Aissue" target="_blank">![GitHub issues open](https://img.shields.io/github/issues/creativetimofficial/notus-nextjs.svg)</a> <a href="https://github.com/creativetimofficial/notus-nextjs/issues?q=is%3Aissue+is%3Aclosed" target="_blank">![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/creativetimofficial/notus-nextjs.svg)</a> <a href="https://gitter.im/creative-tim-general/Lobby" target="_blank">![Join the chat at https://gitter.im/NIT-dgp/General](https://badges.gitter.im/NIT-dgp/General.svg)</a> <a href="https://discord.gg/E4aHAQy" target="_blank">![Chat](https://img.shields.io/badge/chat-on%20discord-7289da.svg)</a>
