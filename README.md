@@ -56,6 +56,11 @@ _Instructions on how to run the firebase functions._
         return { error: "Only admins can add other admins" };
     }
    ```
+6. Deploy updated functions ( goto root directory ) needed to upgrade your firebase plan
+   ```sh
+   firebase deploy --only functions
+   ```
+
 ### Feel free to explore pages
 
 
