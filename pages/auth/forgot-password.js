@@ -1,43 +1,36 @@
 import React from "react";
-import Link from "next/link";
 
 // layout for page
 
 import Auth from "layouts/Auth.js";
 import { useAuth } from "context/AuthProvider";
-import { useRouter } from "next/router";
-export default function Login() {
-  const router = useRouter();
-
-  const { signin } = useAuth();
-
+export default function Register() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [error, setError] = React.useState(null);
-  const [loading, setLoading] = React.useState(false);
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
 
-  const submit = async (e) => {
+  const { signup } = useAuth();
+  const [error, setError] = React.useState(null);
+  const handleSubmit = async (e) => {
+    setError(false);
     e.preventDefault();
-    setLoading(true);
-    setError(null);
     try {
-      await signin(email, password);
-      router.push("/admin/dashboard");
+      await signup(email, password, { firstName, lastName, email });
     } catch (error) {
       setError(error.message);
     }
-    setLoading(false);
   };
   return (
     <>
       <div className="container h-full px-4 mx-auto">
         <div className="flex items-center content-center justify-center h-full">
-          <div className="w-full px-4 lg:w-4/12">
+          <div className="w-full px-4 lg:w-6/12">
             <div className="relative flex flex-col w-full min-w-0 mb-6 break-words border-0 rounded-lg shadow-lg bg-blueGray-200">
               <div className="px-6 py-6 mb-0 rounded-t">
                 <div className="mb-3 text-center">
                   <h6 className="text-sm font-bold text-blueGray-500">
-                    Sign in with
+                    Sign up with
                   </h6>
                 </div>
                 <div className="text-center btn-wrapper">
@@ -60,18 +53,48 @@ export default function Login() {
               </div>
               <div className="flex-auto px-4 py-10 pt-0 lg:px-10">
                 <div className="mb-3 font-bold text-center text-blueGray-400">
-                  <small>Or sign in with credentials</small>
+                  <small>Or sign up with credentials</small>
                 </div>
-                <form onSubmit={submit}>
+                <form onSubmit={handleSubmit}>
                   <div className="relative w-full mb-3">
                     {error && (
                       <div className="relative px-6 py-4 mb-4 text-white bg-red-500 border-0 rounded">
-                        <span className="inline-block mr-8 align-middle">
-                          {error}
-                        </span>
+                        {error}
                       </div>
                     )}
 
+                    <label
+                      className="block mb-2 text-xs font-bold uppercase text-blueGray-600"
+                      htmlFor="grid-password"
+                    >
+                      First Name
+                    </label>
+                    <input
+                      type="text"
+                      className="w-full px-3 py-3 text-sm transition-all duration-150 ease-linear bg-white border-0 rounded shadow placeholder-blueGray-300 text-blueGray-600 focus:outline-none focus:ring"
+                      placeholder="First Name"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="relative w-full mb-3">
+                    <label
+                      className="block mb-2 text-xs font-bold uppercase text-blueGray-600"
+                      htmlFor="grid-password"
+                    >
+                      Last Name
+                    </label>
+                    <input
+                      type="text"
+                      className="w-full px-3 py-3 text-sm transition-all duration-150 ease-linear bg-white border-0 rounded shadow placeholder-blueGray-300 text-blueGray-600 focus:outline-none focus:ring"
+                      placeholder="Last Name"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="relative w-full mb-3">
                     <label
                       className="block mb-2 text-xs font-bold uppercase text-blueGray-600"
                       htmlFor="grid-password"
@@ -102,6 +125,7 @@ export default function Login() {
                       onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
+
                   <div>
                     <label className="inline-flex items-center cursor-pointer">
                       <input
@@ -110,7 +134,14 @@ export default function Login() {
                         className="w-5 h-5 ml-1 transition-all duration-150 ease-linear border-0 rounded form-checkbox text-blueGray-700"
                       />
                       <span className="ml-2 text-sm font-semibold text-blueGray-600">
-                        Remember me
+                        I agree with the{" "}
+                        <a
+                          href="#pablo"
+                          className="text-lightBlue-500"
+                          onClick={(e) => e.preventDefault()}
+                        >
+                          Privacy Policy
+                        </a>
                       </span>
                     </label>
                   </div>
@@ -119,28 +150,11 @@ export default function Login() {
                     <button
                       className="w-full px-6 py-3 mb-1 mr-1 text-sm font-bold text-white uppercase transition-all duration-150 ease-linear rounded shadow outline-none bg-blueGray-800 active:bg-blueGray-600 hover:shadow-lg focus:outline-none"
                       type="submit"
-                      disabled={loading}
                     >
-                      {loading ? "Signing in..." : "Sign In"}
+                      Create Account
                     </button>
                   </div>
                 </form>
-              </div>
-            </div>
-            <div className="relative flex flex-wrap mt-6">
-              <div className="w-1/2">
-                <Link href="/auth/forgot-password">
-                  <a href="#pablo" className="text-blueGray-200">
-                    <small>Forgot password?</small>
-                  </a>
-                </Link>
-              </div>
-              <div className="w-1/2 text-right">
-                <Link href="/auth/register">
-                  <a href="#pablo" className="text-blueGray-200">
-                    <small>Create new account</small>
-                  </a>
-                </Link>
               </div>
             </div>
           </div>
@@ -150,4 +164,4 @@ export default function Login() {
   );
 }
 
-Login.layout = Auth;
+Register.layout = Auth;
